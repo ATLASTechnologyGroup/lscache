@@ -301,6 +301,23 @@
     },
 
     /**
+     * Gets all values currently stored in localStorage
+     * @return {array|Object}
+     */
+    getAll: function() {
+      if (!supportsStorage()) return null;
+      var allValues = {};
+      for (var i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          if(key.indexOf(CACHE_PREFIX + cacheBucket) === 0) {
+              allValues[key] = this.get(key.replace(CACHE_PREFIX + cacheBucket, ''));
+          }
+      }
+
+      return allValues;
+    },
+
+    /**
      * Removes a value from localStorage.
      * Equivalent to 'delete' in memcache, but that's a keyword in JS.
      * @param {string} key
